@@ -1,7 +1,7 @@
-import { EventEmitter, IEvents } from "../components/base/events";
-import { AppItem } from "../components/base/model";
-import { Component } from "../components/base/component";
-import { createElement, ensureElement } from "../utils/utils";
+import { EventEmitter, IEvents } from "../base/events";
+import { AppItem } from "../base/model";
+import { Component } from "../base/component";
+import { createElement, ensureElement } from "../../utils/utils";
 
 interface IBasket {
     itemList: HTMLElement[],

@@ -1,7 +1,7 @@
-import { Component } from "../components/base/component";
+import { Component } from "./base/component";
 import { ensureElement } from "../utils/utils";
 import { IAppItem, IBasketCard } from "../types";
-import { IEvents } from "../components/base/events";
+import { IEvents } from "./base/events";
 
 interface ICardAction {
     onClick: (event: MouseEvent) => void;

@@ -1,9 +1,9 @@
 import { ExternalModule } from 'webpack';
-import { Basket } from './common/basket';
-import { BasketCardItem, Card, CardPreview } from './common/card';
-import { Modal } from './common/modal';
-import { Page } from './common/page';
-import { WebLarekAPI } from './webLarekAPI';
+import { Basket } from './components/common/basket';
+import { BasketCardItem, Card, CardPreview } from './components/card';
+import { Modal } from './components/modal';
+import { Page } from './components/page';
+import { WebLarekAPI } from './components/webLarekAPI';
 import { EventEmitter } from './components/base/events';
 import { AppModel, CatalogChangeEvent, AppItem } from './components/base/model';
 import './scss/styles.scss';
@@ -15,9 +15,9 @@ import {
 } from './types';
 import { API_URL, CDN_URL } from './utils/constants';
 import { cloneTemplate, ensureAllElements, ensureElement } from './utils/utils';
-import { Order } from './order';
-import { ContactInfoForm as ContactInfoForm } from './contactInfo';
-import { Success } from './success';
+import { Order } from './components/common/order';
+import { ContactInfoForm as ContactInfoForm } from './components/common/contactInfo';
+import { Success } from './components/common/success';
 
 const basketTemplate = ensureElement<HTMLTemplateElement>('#basket');
 const basketItem = ensureElement<HTMLTemplateElement>('#card-basket');
@@ -219,6 +219,7 @@ events.on('contacts:submit', () => {
 					},
 				}
 			);
+			appModel.clearBasket();
 			modal.render({
 				content: succsess.render({}),
 			});

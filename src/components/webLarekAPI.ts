@@ -1,5 +1,5 @@
-import { Api, ApiListResponse } from "./components/base/api";
-import { IAppItem, IAppModel, IOrder, IOrderResult } from "./types";
+import { Api, ApiListResponse } from "./base/api";
+import { IAppItem, IAppModel, IOrder, IOrderResult } from "../types";
 
 export interface IWebLarekAPI {
     getItemList: () => Promise<IAppItem[]>;

@@ -1,5 +1,3 @@
-import { AppItem } from "../components/base/model";
-
 export interface IAppItem {
     id: string,
     title: string,
@@ -23,7 +21,7 @@ export type FormErrors = Partial<Record<keyof IOrder, string>>;
 export interface IAppModel {
     catalog: IAppItem[];
     preview: string | null;
-    basket: AppItem[];
+    basket: IAppItem[];
     order: IOrder
 }
 
