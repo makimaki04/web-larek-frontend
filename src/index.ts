@@ -1,4 +1,4 @@
-import { ExternalModule } from 'webpack';
+import './scss/styles.scss';
 import { Basket } from './components/common/basket';
 import { BasketCardItem, Card, CardPreview } from './components/card';
 import { Modal } from './components/modal';
