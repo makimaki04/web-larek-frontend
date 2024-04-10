@@ -45,7 +45,7 @@ export interface IContactInfo {
 export type paymentMethod = 'card' | 'cash';
 
 export interface IOrderForm {
-	paymentMethod: paymentMethod;
+	payment: paymentMethod;
 	address: string;
 }
 

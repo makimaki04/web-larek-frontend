@@ -105,6 +105,9 @@ events.on('modal:open', () => {
 events.on('modal:close', () => {
 	page.locked = false;
 	appModel.addPaymentMethod(null);
+	appModel.addAddress('');
+	appModel.setContactInfoField('email','')
+	appModel.setContactInfoField('phone','')
 });
 
 events.on('basket:add', (item: IAppItem) => {
@@ -146,14 +149,14 @@ events.on('item:delete', (item: IAppItem) => {
 events.on('order:open', () => {
 	modal.render({
 		content: order.render({
-			paymentMethod: null,
+			payment: null,
 			address: '',
 			valid: false,
 			errors: [],
 		}),
 	});
 
-	order.toggleClass('null');
+	order.toggleClass('');
 });
 
 events.on(
@@ -168,9 +171,9 @@ events.on('order.address:change', (email: { value: string }) => {
 });
 
 events.on('orderFormErrors:change', (errors: Partial<IOrderForm>) => {
-	const { paymentMethod, address } = errors;
-	order.valid = !paymentMethod && !address;
-	order.errors = Object.values({ paymentMethod, address })
+	const { payment, address } = errors;
+	order.valid = !payment && !address;
+	order.errors = Object.values({ payment, address })
 		.filter((i) => !!i)
 		.join('; ');
 });
