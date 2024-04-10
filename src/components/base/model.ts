@@ -22,19 +22,10 @@ export abstract class Model<T> {
 	}
 }
 
-export class AppItem extends Model<IAppItem> {
-	id: string;
-	title: string;
-	category: string;
-	image: string;
-	description: string;
-	price: number;
-}
-
 export class AppModel extends Model<IAppModel> {
 	catalog: IAppItem[];
 	preview: string | null;
-	basket: AppItem[] = [];
+	basket: IAppItem[] = [];
 	order: IOrder = {
 		payment: null,
 		address: '',
@@ -59,25 +50,25 @@ export class AppModel extends Model<IAppModel> {
 	}
 
 	setCatalog(items: IAppItem[]) {
-		this.catalog = items.map((item) => new AppItem(item, this.events));
+		this.catalog = items;
 		this.emitChanges('items:changed', { catalog: this.catalog });
 	}
 
-	setPreview(item: AppItem) {
+	setPreview(item: IAppItem) {
 		this.preview = item.id;
 		this.emitChanges('preview:changed', item);
 	}
 
-	addToBasket(item: AppItem) {
+	addToBasket(item: IAppItem) {
 		this.basket.push(item);
 		this.events.emit('basket:update');
 	}
 
-	checkItem(item: AppItem) {
+	checkItem(item: IAppItem) {
 		return this.basket.includes(item);
 	}
 
-	deleteFromBasket(item: AppItem) {
+	deleteFromBasket(item: IAppItem) {
 		const itemId = item.id;
 		this.basket = this.basket.filter((item) => item.id !== itemId);
 		this.events.emit('basket:update');

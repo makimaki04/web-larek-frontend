@@ -5,7 +5,7 @@ import { Modal } from './components/modal';
 import { Page } from './components/page';
 import { WebLarekAPI } from './components/webLarekAPI';
 import { EventEmitter } from './components/base/events';
-import { AppModel, CatalogChangeEvent, AppItem } from './components/base/model';
+import { AppModel, CatalogChangeEvent } from './components/base/model';
 import './scss/styles.scss';
 import {
 	IAppItem,
@@ -14,7 +14,7 @@ import {
 	paymentMethod,
 } from './types';
 import { API_URL, CDN_URL } from './utils/constants';
-import { cloneTemplate, ensureAllElements, ensureElement } from './utils/utils';
+import { cloneTemplate, ensureElement } from './utils/utils';
 import { Order } from './components/common/order';
 import { ContactInfoForm as ContactInfoForm } from './components/common/contactInfo';
 import { Success } from './components/common/success';
@@ -55,12 +55,12 @@ events.on<CatalogChangeEvent>('items:changed', () => {
 	});
 });
 
-events.on('card:select', (item: AppItem) => {
+events.on('card:select', (item: IAppItem) => {
 	appModel.setPreview(item);
 });
 
-events.on('preview:changed', (item: AppItem) => {
-	const showItem = (item: AppItem) => {
+events.on('preview:changed', (item: IAppItem) => {
+	const showItem = (item: IAppItem) => {
 		const card = new CardPreview(cloneTemplate(cardPreview), {
 			onClick: () => {
 				events.emit('basket:add', item);
@@ -107,9 +107,8 @@ events.on('modal:close', () => {
 	appModel.addPaymentMethod(null);
 });
 
-events.on('basket:add', (item: AppItem) => {
+events.on('basket:add', (item: IAppItem) => {
 	appModel.addToBasket(item);
-	console.log(appModel.basket);
 });
 
 events.on('basket:update', () => {
@@ -140,7 +139,7 @@ events.on('basket:open', () => {
 	});
 });
 
-events.on('item:delete', (item: AppItem) => {
+events.on('item:delete', (item: IAppItem) => {
 	appModel.deleteFromBasket(item);
 });
 
@@ -229,4 +228,9 @@ events.on('contacts:submit', () => {
 		});
 });
 
-api.getItemList().then(appModel.setCatalog.bind(appModel));
+api
+	.getItemList()
+	.then(appModel.setCatalog.bind(appModel))
+	.catch((err) => {
+		console.log(err);
+	});

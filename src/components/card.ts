@@ -1,111 +1,137 @@
-import { Component } from "./base/component";
-import { ensureElement } from "../utils/utils";
-import { IAppItem, IBasketCard } from "../types";
-import { IEvents } from "./base/events";
+import { Component } from './base/component';
+import { ensureElement } from '../utils/utils';
+import { IAppItem, IBasketCard } from '../types';
 
 interface ICardAction {
-    onClick: (event: MouseEvent) => void;
+	onClick: (event: MouseEvent) => void;
 }
 
-export class Card extends Component<IAppItem>{
-    protected _title: HTMLElement;
-    protected _image: HTMLImageElement;
-    protected _category: HTMLElement;
-    protected _price: HTMLElement;
+export class Card extends Component<IAppItem> {
+	protected _title: HTMLElement;
+	protected _image: HTMLImageElement;
+	protected _category: HTMLElement;
+	protected _price: HTMLElement;
 
-    constructor(template: HTMLTemplateElement, actions?: ICardAction) {
-        super(template);
-        this._title = ensureElement<HTMLElement>('.card__title', template);
-        this._image = ensureElement<HTMLImageElement>('.card__image', template);
-        this._category = ensureElement<HTMLElement>('.card__category', template);
-        this._price = ensureElement<HTMLElement>('.card__price', template);
+	constructor(template: HTMLTemplateElement, actions?: ICardAction) {
+		super(template);
+		this._title = ensureElement<HTMLElement>('.card__title', template);
+		this._image = ensureElement<HTMLImageElement>('.card__image', template);
+		this._category = ensureElement<HTMLElement>('.card__category', template);
+		this._price = ensureElement<HTMLElement>('.card__price', template);
 
-        if (actions?.onClick) {
-            template.addEventListener('click', actions.onClick);
-        }
-    }
+		if (actions?.onClick) {
+			template.addEventListener('click', actions.onClick);
+		}
+	}
 
-    set title(value: string) {
-        this.setText(this._title, value)
-    }
+	set title(value: string) {
+		this.setText(this._title, value);
+	}
 
-    get title() {
-        return this._title.textContent || ''
-    }
+	get title() {
+		return this._title.textContent || '';
+	}
 
-    set image(src: string) {
-        this.setImage(this._image, src);
-        this._image.alt = this.title;
-    }
-    
-    set category(value: string) {
-        this._category.textContent = value;
-    }
+	set image(src: string) {
+		this.setImage(this._image, src);
+		this._image.alt = this.title;
+	}
 
-    set price(value: number) {
-        this._price.textContent = String(value);
-        if (value === null) {
-            this._price.textContent = "Бесценно";
-        }
-    }
+	set category(value: string) {
+		this.setText(this._category, value);
+		this._category.classList.add(`card__category_${this.checkCategory(value)}`);
+	}
+
+	set price(value: number) {
+		this.setText(this._price, `${value} синапсов`);
+		if (value === null) {
+			this._price.textContent = 'Бесценно';
+		}
+	}
+
+	checkCategory(value: string) {
+		switch (value) {
+			case 'софт-скил':
+				return 'soft';
+				break;
+			case 'хард-скил':
+				return 'hard';
+				break;
+			case 'другое':
+				return 'other';
+				break;
+			case 'дополнительное':
+				return 'additional';
+				break;
+			case 'кнопка':
+				return 'button';
+				break;
+		}
+	}
 }
 
 export class CardPreview extends Card {
-    protected _cardButton: HTMLButtonElement;
-    protected _description: HTMLElement;
+	protected _cardButton: HTMLButtonElement;
+	protected _description: HTMLElement;
 
-    constructor(template: HTMLTemplateElement, actions?: ICardAction) {
-        super(template);
+	constructor(template: HTMLTemplateElement, actions?: ICardAction) {
+		super(template);
 
-        this._cardButton = ensureElement<HTMLButtonElement>('.card__button', template);
-        this._description = ensureElement<HTMLElement>('.card__text', template);
+		this._cardButton = ensureElement<HTMLButtonElement>(
+			'.card__button',
+			template
+		);
+		this._description = ensureElement<HTMLElement>('.card__text', template);
 
-        if(actions?.onClick) {
-            this._cardButton.addEventListener('click', actions.onClick);
-        }
-    }
-    
-    blockButton() {
-        this.setDisabled(this._cardButton, true);
-    }
+		if (actions?.onClick) {
+			this._cardButton.addEventListener('click', actions.onClick);
+		}
+	}
 
-    set description(value: string) {
-        this.setText(this._description, value);
-    }
+	blockButton() {
+		this.setDisabled(this._cardButton, true);
+	}
 
-    set button(value: string) {
-        this.setText(this._cardButton, value);
-    }
+	set description(value: string) {
+		this.setText(this._description, value);
+	}
+
+	set button(value: string) {
+		this.setText(this._cardButton, value);
+	}
 }
 
 export class BasketCardItem extends Component<IBasketCard> {
-    protected _title: HTMLElement;
-    protected _price: HTMLElement;
-    protected _deleteButton: HTMLElement;
-    protected _number: HTMLElement;
-    
-    constructor(template: HTMLTemplateElement, actions?: ICardAction) {
-        super(template);
+	protected _title: HTMLElement;
+	protected _price: HTMLElement;
+	protected _deleteButton: HTMLElement;
+	protected _number: HTMLElement;
 
-        this._title = ensureElement<HTMLElement>('.card__title', template);
-        this._price = ensureElement<HTMLElement>('.card__price', template);
-        this._number = ensureElement<HTMLElement>('.basket__item-index', template)
-        this._deleteButton= ensureElement<HTMLElement>('.basket__item-delete', template);
+	constructor(template: HTMLTemplateElement, actions?: ICardAction) {
+		super(template);
 
-        if(actions?.onClick) {
-            this._deleteButton.addEventListener('click', actions.onClick);
-        }
-    }
+		this._title = ensureElement<HTMLElement>('.card__title', template);
+		this._price = ensureElement<HTMLElement>('.card__price', template);
+		this._number = ensureElement<HTMLElement>('.basket__item-index', template);
+		this._deleteButton = ensureElement<HTMLElement>(
+			'.basket__item-delete',
+			template
+		);
 
-    set title(value: string) {
-        this.setText(this._title, value);
-    }
+		if (actions?.onClick) {
+			this._deleteButton.addEventListener('click', actions.onClick);
+		}
+	}
 
-    set price(value: number) {
-        this.setText(this._price, String(value));
-    }
+	set title(value: string) {
+		this.setText(this._title, value);
+	}
 
-    set number(value: number) {
-        this.setText(this._number, String(value));
-    }
+	set price(value: number) {
+		this.setText(this._price, String(value));
+	}
+
+	set number(value: number) {
+		this.setText(this._number, String(value));
+	}
 }
